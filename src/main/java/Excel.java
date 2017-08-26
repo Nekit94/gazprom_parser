@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 class Excel {
-    static HSSFWorkbook BOOK = new HSSFWorkbook();
+    private static HSSFWorkbook BOOK = new HSSFWorkbook();
     private static Sheet SHEET = BOOK.createSheet();
     private static int rowCount = 0;
     private static Row row = SHEET.createRow(0);
@@ -38,7 +38,6 @@ class Excel {
             rowCount = Parse.ROW;
             row.createCell(0).setCellValue(Parse.ROW);
         }
-//        System.out.println("Write into row: " + rowCount + " Cell: " + cell + " Data: " + data);
         if (cell == 12 || cell == 13) {
             CellStyle hlink_style = BOOK.createCellStyle();
             Font hlink_font = BOOK.createFont();
@@ -50,8 +49,8 @@ class Excel {
             Cell cellLink = row.createCell(cell);
             cellLink.setHyperlink(link);
             switch (cell) {
-                case 12: cellLink.setCellValue("Протокол");
-                case 13: cellLink.setCellValue("Тендер");
+                case 12: cellLink.setCellValue("Протокол"); break;
+                case 13: cellLink.setCellValue("Тендер"); break;
             }
             cellLink.setCellStyle(hlink_style);
         } else {
@@ -61,11 +60,11 @@ class Excel {
 
     static void createXls() throws IOException {
         try {
-            FileOutputStream output = new FileOutputStream(new File(System.getProperty("user.home") + "\\Desktop\\" + mainFrame.getFileName() + ".xls"));
+            FileOutputStream output = new FileOutputStream(new File(mainFrame.getFileName() + ".xls"));
             BOOK.write(output);
             output.close();
         } catch (FileNotFoundException e) {
-            FileOutputStream output = new FileOutputStream(new File(System.getProperty("user.home") + "\\Desktop\\закрывай блин файл перед запуском проги.xls"));
+            FileOutputStream output = new FileOutputStream(new File("close_excel_before_start.xls"));
             BOOK.write(output);
             output.close();
         }

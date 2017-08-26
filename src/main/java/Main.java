@@ -12,14 +12,12 @@ public class Main {
 
     static WebDriver driver = new ChromeDriver();
     static Set<String> links = new HashSet();
-    private static TooLongLoadMessage timer;
 
 
-
-    public static void LinkGathering(String keyWord, String startDate, String endDate) throws Exception {
+    static void LinkGathering(String keyWord, String startDate, String endDate) throws Exception {
 
         driver.get("https://etpgaz.gazprombank.ru/#com/procedure/index");
-        timer = new TooLongLoadMessage();
+        TooLongLoadMessage timer = new TooLongLoadMessage();
         timer.startTimer();
         (new WebDriverWait(driver, 20000)).until(presenceOfElementLocated(By.id("ext-gen92")));
         WebElement search = driver.findElement(By.id("ext-gen92"));
@@ -106,7 +104,7 @@ public class Main {
 
     }
 
-    static void tryToClick(WebElement element, int wait, int step) throws Exception {
+    private static void tryToClick(WebElement element, int wait, int step) throws Exception {
         for (int i = 0; i<wait/step; i++) {
             try {
                 element.click();

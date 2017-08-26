@@ -22,21 +22,19 @@ public class mainFrame extends JFrame {
     private JPanel mainPanel, progressPanel;
     static JPanel theMainPanel;
     private static JTextField keyWords, fileName;
-    private JLabel startDateLabel, endDateLabel, keyWordsLabel, fileNameLabel;
-    private JButton start, stop;
     static JProgressBar progressBar;
     private Thread parseThread = new ParseThread();
     static JLabel progressBarLabel = new JLabel("0 из 0");
     private JFormattedTextField startDate, endDate;
     private MaskFormatter dateFormat;
-    static PrintStream ps;
+    private static PrintStream ps;
 
 
     public mainFrame() {
-        super("MegaParser2000");
+        super("Gazprom Parser");
 
         Calendar calendar = new GregorianCalendar();
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd.MM_HH:mm");
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd.MM_HH-mm");
         String dateToday = formattedDate.format(calendar.getTime());
 
         theMainPanel = new JPanel(new BorderLayout());
@@ -61,22 +59,22 @@ public class mainFrame extends JFrame {
 
         Container container = mainPanel;
         container.setLayout(new GridLayout(5, 2, 10, 10));
-        keyWordsLabel = new JLabel("Ключевые слова: ", 2);
+        JLabel keyWordsLabel = new JLabel("Ключевые слова: ", SwingConstants.LEFT);
         container.add(keyWordsLabel);
         keyWords = new JTextField("", 30);
         container.add(keyWords);
-        startDateLabel = new JLabel("C:", 2);
-        endDateLabel = new JLabel("По:", 2);
+        JLabel startDateLabel = new JLabel("C:", SwingConstants.LEFT);
+        JLabel endDateLabel = new JLabel("По:", SwingConstants.LEFT);
         container.add(startDateLabel);
         container.add(startDate);
         container.add(endDateLabel);
         container.add(endDate);
-        fileNameLabel = new JLabel("Имя файла: ", 2);
+        JLabel fileNameLabel = new JLabel("Имя файла: ", SwingConstants.LEFT);
         container.add(fileNameLabel);
         fileName = new JTextField("parser_" + dateToday, 10);
         container.add(fileName);
-        start = new JButton("Start");
-        stop = new JButton("Stop");
+        JButton start = new JButton("Start");
+        JButton stop = new JButton("Stop");
         container.add(start);
         progressBar = new JProgressBar();
         progressBar.setForeground(new Color(0, 255, 0));
@@ -128,7 +126,7 @@ public class mainFrame extends JFrame {
 
     }
 
-    public static String getFileName() {
+    static String getFileName() {
         return fileName.getText();
     }
 
@@ -171,7 +169,7 @@ public class mainFrame extends JFrame {
         mainPanel.setBackground(new Color(-1));
         mainPanel.setEnabled(true);
         mainPanel.setToolTipText("");
-        mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(-16777216)), "MegaParser2000 v2.1.3", TitledBorder.CENTER, TitledBorder.ABOVE_TOP, this.$$$getFont$$$(null, -1, -1, mainPanel.getFont()), new Color(-16777216)));
+        mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(-16777216)), "gazprom_parser v2.2.1", TitledBorder.CENTER, TitledBorder.ABOVE_TOP, this.$$$getFont$$$(null, -1, -1, mainPanel.getFont()), new Color(-16777216)));
     }
 
     /**
@@ -277,14 +275,13 @@ public class mainFrame extends JFrame {
 
     private void createLogStream() {
         Calendar calendar = new GregorianCalendar();
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd.MM_HH:mm");
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd.MM_HH-mm");
         String dateToday = formattedDate.format(calendar.getTime());
         try {
-            ps = new PrintStream(new File(System.getProperty("user.home") +
-                    "\\Desktop\\parserLog_" + dateToday + ".txt"));
+            ps = new PrintStream(new File("parserLog_" + dateToday + ".txt"));
         } catch (FileNotFoundException e1) {
             try {
-                ps = new PrintStream(System.getProperty("user.home") + "\\Desktop\\parserLogError.txt");
+                ps = new PrintStream("parserLogError.txt");
             } catch (FileNotFoundException e2) {
                 JOptionPane.showMessageDialog(theMainPanel, "Не могу сохранить лог");
             }
@@ -294,11 +291,10 @@ public class mainFrame extends JFrame {
     private void makeScreenshot(WebDriver driver) {
         File scr = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         Calendar calendar = new GregorianCalendar();
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd.MM_HH:mm");
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd.MM_HH-mm");
         String dateToday = formattedDate.format(calendar.getTime());
         try {
-            FileUtils.copyFile(scr, new File(System.getProperty("user.home") +
-                    "\\Desktop\\ErrorScr_" + dateToday + ".png"));
+            FileUtils.copyFile(scr, new File("ErrorScr_" + dateToday + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
